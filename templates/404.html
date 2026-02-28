@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Page Not Found - HiveBuzz{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content text-center">
+        <div class="error-image mb-4">
+            <img src="{{ url_for('static', filename='img/illustrations/error-404.svg') }}" alt="404 Error" class="img-fluid"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBkNmVmZCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIj48L2NpcmNsZT48bGluZSB4MT0iMTIiIHkxPSI4IiB4Mj0iMTIiIHkyPSIxMiI+PC9saW5lPjxsaW5lIHgxPSIxMiIgeTE9IjE2IiB4Mj0iMTIiIHkyPSIxNiI+PC9saW5lPjwvc3ZnPg==';">
+        </div>
+        <h1 class="error-code mb-3">404</h1>
+        <h2 class="error-title mb-4">Page Not Found</h2>
+        <p class="error-description mb-5">
+            The page you're looking for doesn't exist or has been moved.
+        </p>
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                <i class="bi bi-house-door me-2"></i> Go Home
+            </a>
+            <button onclick="window.history.back()" class="btn btn-outline-secondary ms-3">
+                <i class="bi bi-arrow-left me-2"></i> Go Back
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .error-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        padding: 2rem;
+    }
+
+    .error-content {
+        max-width: 500px;
+    }
+
+    .error-image img {
+        max-height: 200px;
+    }
+
+    .error-code {
+        font-size: 6rem;
+        font-weight: 700;
+        color: var(--accent-primary);
+        line-height: 1;
+    }
+
+    .error-title {
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .error-description {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}

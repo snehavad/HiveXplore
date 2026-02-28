@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" class="{{ 'dark-mode' if session.get('dark_mode', false) }} theme-{{ session.get('theme_color', 'blue') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% if no_auto_refresh is defined and no_auto_refresh %}
+    <!-- No automatic refresh -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    {% else %}
+    <!-- Standard caching for pages that can refresh -->
+    {% endif %}
+
+    <title>{% block title %}HiveBuzz{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+    />
+
+    <!-- Common CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    />
+
+    <!-- Apply dark mode if enabled -->
+    {% if session.get('dark_mode') %}
+    <script>
+        document.documentElement.classList.add("dark-mode");
+    </script>
+    {% endif %}
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        href="{{ url_for('static', filename='img/favicon.svg') }}"
+        type="image/svg+xml"
+    />
+
+    <!-- Page-specific styles -->
+    {% block styles %}{% endblock %}
+</head>
+<body class="{{ 'dark-mode' if session.get('dark_mode', false) }} theme-{{ session.get('theme_color', 'blue') }}">
+    <!-- Header -->
+    <header
+        class="navbar navbar-expand-lg {% if session.get('dark_mode') %}navbar-dark bg-dark{% else %}navbar-light bg-light{% endif %} sticky-top"
+    >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img
+                    src="{{ url_for('static', filename='img/logo.svg') }}"
+                    alt="HiveBuzz Logo"
+                    height="30"
+                    class="me-2"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSIjMDk3ZmZkIj48cGF0aCBkPSJNNTAgMThMODIgMzVWNzBMNTAgODggMTggNzBWMzVaIi8+PHBhdGggZD0iTTUwIDI3TDcxIDM3VjYyTDUwIDczIDI5IDYyVjM3WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==';"
+                />
+                HiveBuzz
+            </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if session.get('username') %}
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if request.path == '/' %}active{% endif %}"
+                            href="{{ url_for('index') }}"
+                        >
+                            <i class="bi bi-house-door"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if request.path.startswith('/posts') %}active{% endif %}"
+                            href="{{ url_for('posts') }}"
+                        >
+                            <i class="bi bi-file-earmark-text"></i> Posts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if request.path == '/wallet' %}active{% endif %}"
+                            href="{{ url_for('wallet') }}"
+                        >
+                            <i class="bi bi-wallet2"></i> Wallet
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {% if request.path == '/transactions' %}active{% endif %}"
+                            href="{{ url_for('transactions') }}"
+                        >
+                            <i class="bi bi-arrow-left-right me-1"></i>
+                            Transactions
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    {% if session.get('username') %}
+                    <!-- User is logged in -->
+                    <li class="nav-item">
+                        <a
+                            href="{{ url_for('create_post') }}"
+                            class="btn btn-primary btn-sm me-2"
+                        >
+                            <i class="bi bi-plus-lg"></i> Create Post
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="userDropdown"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <img
+                                src="https://images.hive.blog/u/{{ session.get('username') }}/avatar"
+                                alt="Avatar"
+                                class="avatar-xs me-1"
+                                width="24"
+                                height="24"
+                            />
+                            @{{ session.get('username') }}
+                        </a>
+                        <ul
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="userDropdown"
+                        >
+                            <li>
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url_for('profile', username=session.get('username')) }}"
+                                >
+                                    <i class="bi bi-person"></i> Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url_for('settings') }}"
+                                >
+                                    <i class="bi bi-gear"></i> Settings
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a
+                                    class="dropdown-item"
+                                    href="{{ url_for('logout') }}"
+                                >
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <!-- User is not logged in -->
+                    <li class="nav-item">
+                        <a
+                            href="{{ url_for('login') }}"
+                            class="btn btn-outline-primary me-2"
+                            >Log In</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            href="https://signup.hive.io/"
+                            target="_blank"
+                            class="btn btn-primary"
+                            >Sign Up</a
+                        >
+                    </li>
+                    {% endif %}
+                    <!-- Dark mode toggle -->
+                    <li class="nav-item ms-2 d-flex align-items-center">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox"
+                            role="switch" id="themeToggle" {% if
+                            session.get('dark_mode') %}checked{% endif %}>
+                            <label
+                                class="form-check-label"
+                                for="themeToggle"
+                            >
+                                <i
+                                    class="bi {% if session.get('dark_mode') %}bi-sun{% else %}bi-moon{% endif %}"
+                                    data-theme-icon="theme-toggle"
+                                ></i>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main-content">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %} {%
+        if messages %}
+        <div class="container mt-3">
+            {% for category, message in messages %}
+            <div
+                class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show flash-message"
+                role="alert"
+            >
+                {{ message }}
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
+
+        <!-- Page content -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Connect</h5>
+                    <div class="social-icons">
+                        <a
+                            href="https://twitter.com/"
+                            target="_blank"
+                            class="me-3"
+                            ><i class="bi bi-twitter"></i
+                        ></a>
+                        <a
+                            href="https://github.com/Life-Experimentalist/HiveBuzz"
+                            target="_blank"
+                            class="me-3"
+                            ><i class="bi bi-github"></i
+                        ></a>
+                        <a href="https://discord.com/" target="_blank"
+                            ><i class="bi bi-discord"></i
+                        ></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="https://hive.blog" target="_blank"
+                                >Hive.blog</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://peakd.com" target="_blank"
+                                >PeakD</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://hiveblocks.com" target="_blank"
+                                >Hive Block Explorer</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://developers.hive.io"
+                                target="_blank"
+                                >Hive Developer Portal</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3" />
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">
+                        &copy; {{ now.year }} HiveBuzz. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 text-muted">
+                        v1.0.0 |
+                        <a
+                            href="https://github.com/Life-Experimentalist/HiveBuzz"
+                            target="_blank"
+                            class="text-decoration-none"
+                            >GitHub Repo</a
+                        >
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Load common.js FIRST to prevent auto-reloading -->
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme-manager.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hive-keychain.js') }}"></script>
+
+    <!-- Modify the API status check to be no-refresh aware -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if this is a no-refresh page
+            const currentPath = window.location.pathname;
+            const noRefreshUrls = ['/posts', '/post/'];
+            const isNoRefreshPage = noRefreshUrls.some(pattern => currentPath.includes(pattern));
+
+            // Skip automatic status checks on no-refresh pages
+            if (isNoRefreshPage) {
+                console.log("Skipping automatic API status checks on no-refresh page");
+
+                // Override any existing status check logic
+                if (window.checkApiStatus) {
+                    window.checkApiStatus = function() {
+                        console.log("API status check prevented on no-refresh page");
+                        return false;
+                    };
+                }
+
+                // Add a class to the body to help with CSS targeting
+                document.body.classList.add('no-auto-refresh');
+
+                // Set a flag in localStorage (persist across page loads)
+                localStorage.setItem('noAutoRefresh', 'true');
+
+                // Remove any existing loading indicators
+                const loadingIndicator = document.getElementById('blockchain-loading');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+            } else {
+                localStorage.removeItem('noAutoRefresh');
+            }
+        });
+    </script>
+
+    <!-- Add loading indicator handling with improvements -->
+    <script>
+        // Show loading indicator for blockchain operations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add loading indicator for blockchain-dependent pages
+            const blockchainPages = ['/trending', '/wallet', '/transactions'];
+            const currentPath = window.location.pathname;
+            const isNoRefreshPage = localStorage.getItem('noAutoRefresh') === 'true';
+
+            if (blockchainPages.includes(currentPath) && !isNoRefreshPage) {
+                // Check if we need to show initialization status
+                const container = document.querySelector('main.main-content > .container');
+                if (container) {
+                    // Create a loading indicator that will be shown only during initial load
+                    const loadingIndicator = document.createElement('div');
+                    loadingIndicator.id = 'blockchain-loading';
+                    loadingIndicator.className = 'text-center my-3';
+                    loadingIndicator.innerHTML = `
+                        <div class="alert alert-info" role="alert">
+                            <div class="d-flex align-items-center">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <div>Loading blockchain data... <small>(The page will update automatically)</small></div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Insert at the top of the container
+                    container.insertBefore(loadingIndicator, container.firstChild);
+
+                    // Function to check API status periodically
+                    function checkApiStatus() {
+                        // Add timestamp to prevent caching
+                        const timestamp = new Date().getTime();
+                        fetch(`/api/status?_=${timestamp}`, {
+                            headers: {
+                                'X-No-Reload': 'true',
+                                'Cache-Control': 'no-cache, no-store, must-revalidate'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.initialized && !isNoRefreshPage) {
+                                    // Show success message that fades out
+                                    loadingIndicator.innerHTML = `
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            Connected to blockchain.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    `;
+                                    // Hide after a delay instead of refreshing
+                                    setTimeout(() => {
+                                        if (loadingIndicator) {
+                                            loadingIndicator.style.display = 'none';
+                                        }
+                                    }, 3000);
+                                } else if (data.initializing && !isNoRefreshPage) {
+                                    // Keep the indicator but update the message
+                                    loadingIndicator.innerHTML = `
+                                        <div class="alert alert-info" role="alert">
+                                            <div class="d-flex align-items-center">
+                                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                                <div>Connecting to blockchain... <small>(This may take a moment)</small></div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    // Check again in 3 seconds
+                                    setTimeout(checkApiStatus, 3000);
+                                } else {
+                                    // Using direct API - no need to wait, but inform user
+                                    loadingIndicator.innerHTML = `
+                                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                            <i class="bi bi-info-circle-fill me-2"></i>
+                                            Using API data while optimizing blockchain connection...
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    `;
+                                    // Auto-hide after 5 seconds
+                                    setTimeout(() => {
+                                        if (loadingIndicator) {
+                                            loadingIndicator.style.display = 'none';
+                                        }
+                                    }, 5000);
+                                }
+                            })
+                            .catch(() => {
+                                // Handle error
+                                loadingIndicator.innerHTML = `
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        Unable to connect to blockchain. Using cached data.
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                `;
+                            });
+                    }
+
+                    // Start checking after a short delay, but only for refresh-allowed pages
+                    if (!isNoRefreshPage) {
+                        setTimeout(checkApiStatus, 500);
+                    } else {
+                        loadingIndicator.style.display = 'none';
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Apply custom theme if set -->
+    {% if session.get('theme_color') == 'custom' and session.get('custom_color') %}
+    <style id="custom-theme-style">
+    :root {
+        --accent-primary: {{ session.get('custom_color', '#7367f0') }};
+        --accent-primary-rgb: {{
+            session.get('custom_color', '#7367f0')[1:3] | int(base=16) }}, {{
+            session.get('custom_color', '#7367f0')[3:5] | int(base=16) }}, {{
+            session.get('custom_color', '#7367f0')[5:7] | int(base=16) }};
+        --accent-light: {{ session.get('custom_color_light', '#9589f6') }};
+        --accent-dark: {{ session.get('custom_color_dark', '#4824eb') }};
+    }
+    </style>
+    {% endif %}
+
+    <!-- Page-specific scripts -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,343 @@
+{% extends 'base.html' %} {% block title %}Welcome to HiveBuzz - Explore the
+Hive Blockchain{% endblock %} {% block content %}
+<div class="landing-container">
+	<div class="hero-section text-center">
+		<div class="hero-content">
+			<img
+				src="{{ url_for('static', filename='img/logo.svg') }}"
+				alt="HiveBuzz Logo"
+				class="logo mb-4"
+				width="120"
+				height="120"
+				onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSIjMDk3ZmZkIj48cGF0aCBkPSJNNTAgMThMODIgMzVWNzBMNTAgODggMTggNzBWMzVaIi8+PHBhdGggZD0iTTUwIDI3TDcxIDM3VjYyTDUwIDczIDI5IDYyVjM3WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==';"
+			/>
+			<h1 class="hero-title">
+				Welcome to <span class="text-accent">HiveBuzz</span>
+			</h1>
+			<p class="hero-subtitle mb-4">
+				Explore the Hive blockchain with a seamless web experience
+			</p>
+			<div class="hero-actions">
+				<a
+					href="{{ url_for('login') }}"
+					class="btn btn-primary btn-lg me-3"
+				>
+					<i class="bi bi-box-arrow-in-right me-2"></i>Log In
+				</a>
+				<a
+					href="https://signup.hive.io/"
+					target="_blank"
+					class="btn btn-outline-primary btn-lg"
+				>
+					<i class="bi bi-person-plus me-2"></i>Create Hive Account
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<section class="features-section">
+		<div class="container py-5">
+			<h2 class="section-title text-center mb-5">Why Choose HiveBuzz</h2>
+			<div class="row g-4">
+				<div class="col-md-4">
+					<div class="feature-card">
+						<div class="feature-icon">
+							<i class="bi bi-lock"></i>
+						</div>
+						<h3 class="feature-title">Secure Authentication</h3>
+						<p class="feature-text">
+							Log in securely with Hive Keychain, HiveAuth, or
+							HiveSigner without sharing your private keys.
+						</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="feature-card">
+						<div class="feature-icon">
+							<i class="bi bi-cash-coin"></i>
+						</div>
+						<h3 class="feature-title">Earn Rewards</h3>
+						<p class="feature-text">
+							Get rewarded in cryptocurrency for your quality
+							content and engagement on the platform.
+						</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="feature-card">
+						<div class="feature-icon">
+							<i class="bi bi-people"></i>
+						</div>
+						<h3 class="feature-title">Community Powered</h3>
+						<p class="feature-text">
+							Join a vibrant community of creators and curators
+							who value quality content and fair rewards.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="how-it-works-section bg-light py-5">
+		<div class="container">
+			<h2 class="section-title text-center mb-5">How It Works</h2>
+			<div class="steps">
+				<div class="step">
+					<div class="step-number">1</div>
+					<div class="step-content">
+						<h3>Create a Hive Account</h3>
+						<p>
+							Sign up for a free Hive blockchain account through
+							our partner service.
+						</p>
+					</div>
+				</div>
+				<div class="step">
+					<div class="step-number">2</div>
+					<div class="step-content">
+						<h3>Set Up Hive Keychain</h3>
+						<p>
+							Install the Hive Keychain browser extension for
+							secure, passwordless login.
+						</p>
+					</div>
+				</div>
+				<div class="step">
+					<div class="step-number">3</div>
+					<div class="step-content">
+						<h3>Log In to HiveBuzz</h3>
+						<p>
+							Connect with your Hive credentials to start using
+							the platform.
+						</p>
+					</div>
+				</div>
+				<div class="step">
+					<div class="step-number">4</div>
+					<div class="step-content">
+						<h3>Create & Engage</h3>
+						<p>
+							Start posting content, upvoting others, and earning
+							rewards in cryptocurrency.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="demo-section py-5">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-6 mb-4 mb-md-0">
+					<h2 class="section-title">
+						Not ready to create an account?
+					</h2>
+					<p class="mb-4">
+						You can try HiveBuzz with our demo mode to see how the
+						platform works before creating an account.
+					</p>
+					<a
+						href="{{ url_for('login') }}#demo"
+						class="btn btn-primary"
+					>
+						<i class="bi bi-play-circle me-2"></i>Try Demo Mode
+					</a>
+				</div>
+				<div class="col-md-6">
+					<div class="demo-image-container">
+						<img
+							src="{{ url_for('static', filename='img/hive-logo.svg') }}"
+							alt="Hive Logo"
+							class="demo-image img-fluid"
+							onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSIjRTMxMzM3Ij48cGF0aCBkPSJNNTAgMThMODIgMzVWNzBMNTAgODggMTggNzBWMzVaIi8+PHBhdGggZD0iTTUwIDI3TDcxIDM3VjYyTDUwIDczIDI5IDYyVjM3WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==';"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+{% endblock %} {% block styles %}
+<style>
+	.landing-container {
+		overflow-x: hidden;
+	}
+
+	.hero-section {
+		padding: 7rem 1rem;
+		background: linear-gradient(
+			135deg,
+			var(--bg-body) 0%,
+			var(--accent-light) 100%
+		);
+		color: var(--text-primary);
+		position: relative;
+	}
+
+	body.dark-mode .hero-section {
+		background: linear-gradient(
+			135deg,
+			var(--bg-body) 0%,
+			var(--accent-dark) 100%
+		);
+	}
+
+	.hero-content {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.hero-title {
+		font-size: 3rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+
+	.hero-subtitle {
+		font-size: 1.25rem;
+		color: var(--text-secondary);
+		margin-bottom: 2rem;
+	}
+
+	.text-accent {
+		color: var(--accent-primary);
+	}
+
+	/* Features Section */
+	.features-section {
+		padding: 5rem 0;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		font-weight: 600;
+		margin-bottom: 2rem;
+		color: var(--text-primary);
+	}
+
+	.feature-card {
+		height: 100%;
+		padding: 2rem;
+		border-radius: 1rem;
+		box-shadow: var(--shadow-sm);
+		background-color: var(--bg-card);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.feature-card:hover {
+		transform: translateY(-10px);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.feature-icon {
+		font-size: 2.5rem;
+		color: var(--accent-primary);
+		margin-bottom: 1.5rem;
+	}
+
+	.feature-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		margin-bottom: 1rem;
+		color: var(--text-primary);
+	}
+
+	.feature-text {
+		color: var(--text-secondary);
+		margin-bottom: 0;
+	}
+
+	/* How It Works Section */
+	.how-it-works-section {
+		background-color: var(--bg-hover);
+	}
+
+	body.dark-mode .how-it-works-section {
+		background-color: var(--bg-card);
+	}
+
+	.steps {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.step {
+		display: flex;
+		margin-bottom: 2rem;
+		align-items: flex-start;
+	}
+
+	.step:last-child {
+		margin-bottom: 0;
+	}
+
+	.step-number {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		background-color: var(--accent-primary);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin-right: 1.5rem;
+		flex-shrink: 0;
+	}
+
+	.step-content h3 {
+		margin-bottom: 0.5rem;
+		color: var(--text-primary);
+	}
+
+	.step-content p {
+		color: var(--text-secondary);
+		margin-bottom: 0;
+	}
+
+	/* Demo Section */
+	.demo-section {
+		background-color: var(--bg-body);
+	}
+
+	.demo-image-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 2rem;
+	}
+
+	.demo-image {
+		max-width: 80%;
+		height: auto;
+	}
+
+	/* Logo */
+	.logo {
+		max-width: 120px;
+		height: auto;
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.hero-title {
+			font-size: 2rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+
+		.hero-section {
+			padding: 4rem 1rem;
+		}
+	}
+</style>
+{% endblock %}

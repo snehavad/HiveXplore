@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Dashboard Page Styles - Light/Dark Theme Compatible
+   ========================================================================== */
+
+.dashboard-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 1rem;
+}
+
+.account-stats {
+	margin-bottom: 1.5rem;
+}
+
+.stat-item {
+	padding: 1rem;
+	border-radius: 8px;
+	background-color: var(--bg-hover);
+	transition: transform 0.2s;
+}
+
+.stat-item:hover {
+	transform: translateY(-5px);
+}
+
+.stat-value {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--accent-primary);
+}
+
+.stat-label {
+	font-size: 0.8rem;
+	color: var(--text-secondary);
+}
+
+.action-link {
+	text-decoration: none;
+	color: inherit;
+	display: block;
+	height: 100%;
+}
+
+.action-card {
+	display: flex;
+	align-items: center;
+	padding: 1rem;
+	border-radius: 8px;
+	background-color: var(--bg-hover);
+	transition: all 0.3s;
+	height: 100%;
+}
+
+.action-card:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--shadow-md);
+	background-color: var(--accent-light);
+	color: white;
+}
+
+.action-card:hover .text-muted {
+	color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.action-icon {
+	font-size: 1.5rem;
+	color: var(--accent-primary);
+	margin-right: 1rem;
+}
+
+.action-card:hover .action-icon {
+	color: white;
+}
+
+.activity-icon {
+	font-size: 1.25rem;
+	color: var(--accent-primary);
+	width: 24px;
+	text-align: center;
+}
+
+.activity-item {
+	transition: background-color 0.2s;
+}
+
+.activity-item:hover {
+	background-color: var(--bg-hover);
+}

@@ -1,0 +1,365 @@
+/**
+ * Dashboard-specific styles for HiveBuzz
+ */
+
+/* User Profile & Stats */
+.avatar-lg {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border: 3px solid #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .avatar-lg {
+	border-color: #2d3748;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Activity Section */
+.activity-icon {
+	width: 36px;
+	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--bs-light);
+	border-radius: 50%;
+	color: var(--accent-primary);
+	flex-shrink: 0;
+}
+
+body.dark-mode .activity-icon {
+	background-color: #2d3748;
+}
+
+.activity-icon i {
+	font-size: 18px;
+}
+
+.activity-title {
+	display: block;
+	margin-bottom: 0.2rem;
+	color: inherit;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.activity-title:hover {
+	color: var(--accent-primary);
+}
+
+.activity-time {
+	font-size: 0.8rem;
+	color: #6c757d;
+}
+
+body.dark-mode .activity-time {
+	color: #a0aec0;
+}
+
+/* Trending posts scrollable styles */
+.trending-posts-container {
+	position: relative;
+	margin: 0 -1px;
+	overflow: hidden;
+}
+
+.trending-posts-container::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 30px;
+	background: linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.3s;
+}
+
+body.dark-mode .trending-posts-container::after {
+	background: linear-gradient(to top, rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0));
+}
+
+.trending-posts-container:hover::after {
+	opacity: 1;
+}
+
+.trending-posts-scroll {
+	max-height: 450px;
+	/* Adjusted for better desktop view */
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scroll-behavior: smooth;
+	border-radius: 4px;
+	transition: all 0.2s ease;
+}
+
+.trending-post-item {
+	transition: background-color 0.2s ease;
+	padding: 16px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.trending-post-item:last-child {
+	border-bottom: none;
+}
+
+.trending-post-item:hover {
+	background-color: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-mode .trending-post-item {
+	border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .trending-post-item:hover {
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
+.trending-post-image {
+	flex: 0 0 80px;
+}
+
+.trending-post-image a {
+	display: block;
+	overflow: hidden;
+	border-radius: 4px;
+}
+
+.trending-post-image img,
+.post-image-placeholder {
+	width: 80px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 4px;
+	transition: transform 0.3s ease;
+}
+
+.trending-post-image a:hover img,
+.trending-post-image a:hover .post-image-placeholder {
+	transform: scale(1.05);
+}
+
+.post-image-placeholder {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f8f9fa;
+	color: #adb5bd;
+}
+
+body.dark-mode .post-image-placeholder {
+	background-color: #2d3748;
+	color: #718096;
+}
+
+.trending-post-content {
+	flex: 1;
+	min-width: 0;
+	/* Fix for text-overflow in flex child */
+}
+
+.trending-post-title {
+	font-size: 1rem;
+	line-height: 1.4;
+	margin-bottom: 0.25rem;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.trending-post-title a:hover {
+	color: var(--accent-primary);
+}
+
+.trending-post-excerpt {
+	font-size: 0.875rem;
+	color: #6c757d;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	line-height: 1.4;
+}
+
+body.dark-mode .trending-post-excerpt {
+	color: #a0aec0;
+}
+
+/* Scroll controls */
+.scroll-controls {
+	display: none;
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+.trending-posts-container:hover .scroll-controls {
+	display: block;
+}
+
+.scroll-btn {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background: var(--accent-primary);
+	color: white;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	opacity: 0.7;
+	transition: opacity 0.2s, transform 0.2s;
+	pointer-events: auto;
+	z-index: 3;
+}
+
+.scroll-btn:hover {
+	opacity: 1;
+	transform: scale(1.1);
+}
+
+.scroll-btn:disabled,
+.scroll-btn[aria-disabled="true"] {
+	opacity: 0.3;
+	pointer-events: none;
+}
+
+.scroll-btn .bi-chevron-up,
+.scroll-btn .bi-chevron-down {
+	font-size: 14px;
+}
+
+.scroll-left {
+	left: 10px;
+}
+
+.scroll-right {
+	right: 10px;
+}
+
+/* Hide scrollbar but keep functionality in different browsers */
+.trending-posts-scroll::-webkit-scrollbar {
+	height: 6px;
+	width: 6px;
+}
+
+.trending-posts-scroll::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+.trending-posts-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 3px;
+}
+
+body.dark-mode .trending-posts-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox */
+.trending-posts-scroll {
+	scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+	scrollbar-width: thin;
+}
+
+body.dark-mode .trending-posts-scroll {
+	scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Stats card enhancements */
+.card .stat-value {
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--accent-primary);
+}
+
+/* Markdown preview styling */
+.markdown-preview {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3,
+.markdown-preview h4,
+.markdown-preview h5,
+.markdown-preview h6 {
+	font-size: inherit;
+	font-weight: 600;
+	margin: 0.25rem 0;
+	line-height: 1.3;
+}
+
+.markdown-preview p {
+	margin-bottom: 0.5rem;
+}
+
+.markdown-preview img {
+	max-width: 100%;
+	height: auto;
+}
+
+.markdown-preview code {
+	background-color: rgba(0, 0, 0, 0.05);
+	padding: 0.1rem 0.3rem;
+	border-radius: 3px;
+	font-family: monospace;
+	font-size: 0.85em;
+}
+
+body.dark-mode .markdown-preview code {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.markdown-preview blockquote {
+	border-left: 3px solid var(--accent-primary);
+	padding-left: 0.5rem;
+	color: #6c757d;
+	margin: 0.5rem 0;
+}
+
+body.dark-mode .markdown-preview blockquote {
+	color: #adb5bd;
+}
+
+/* Media queries for better mobile experience */
+@media (max-width: 767.98px) {
+	.trending-post-image {
+		flex: 0 0 60px;
+	}
+
+	.trending-post-image img,
+	.post-image-placeholder {
+		width: 60px;
+		height: 45px;
+	}
+
+	.trending-post-title {
+		font-size: 0.95rem;
+	}
+
+	.trending-post-excerpt {
+		-webkit-line-clamp: 1;
+	}
+
+	.trending-posts-scroll {
+		max-height: 350px;
+		/* Shorter on mobile */
+	}
+}
+
+/* Small desktop screens */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+	.trending-posts-scroll {
+		max-height: 400px;
+	}
+}

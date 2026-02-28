@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="keychain-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5c6cff" />
+      <stop offset="100%" stop-color="#3947c4" />
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <circle fill="url(#keychain-gradient)" cx="24" cy="24" r="24"/>
+    <path d="M33,21 L27,21 L27,15 C27,12.2 24.8,10 22,10 C19.2,10 17,12.2 17,15 C17,17.8 19.2,20 22,20 C23.1,20 24.1,19.6 24.9,19.1 L33,27.2 L33,31 L37,31 L37,27 L33,27 L33,25 L35,25 L35,21 L33,21 Z M22,16 C21.4,16 21,15.6 21,15 C21,14.4 21.4,14 22,14 C22.6,14 23,14.4 23,15 C23,15.6 22.6,16 22,16 Z" fill="#FFFFFF"/>
+  </g>
+</svg>

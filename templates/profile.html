@@ -1,0 +1,430 @@
+{% extends 'base.html' %} {% block title %}{{ profile_user }} - Profile -
+HiveBuzz{% endblock %} {% block content %}
+<div class="container py-4">
+	<div class="row">
+		<div class="col-lg-10 mx-auto">
+			{% if user_data.get('error_loading') %}
+			<div class="alert alert-warning mb-4">
+				<i class="bi bi-exclamation-triangle me-2"></i>
+				There was an issue loading complete profile data from the
+				blockchain. Limited information is displayed.
+			</div>
+			{% endif %}
+
+			<div class="profile-header card mb-4">
+				<div class="card-body">
+					<div class="row align-items-center">
+						<div class="col-md-auto text-center mb-3 mb-md-0">
+							<div class="position-relative">
+								<img
+									src="{{ user_data.profile_image | default('https://images.hive.blog/u/' ~ profile_user ~ '/avatar') }}"
+									alt="{{ profile_user }}"
+									class="avatar-lg border"
+									onerror="this.src='{{ url_for('static', filename='img/default-avatar.png') }}'"
+								/>
+								{% if is_demo %}
+								<span
+									class="badge bg-warning position-absolute top-0 end-0"
+									>DEMO</span
+								>
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-md">
+							<div
+								class="d-md-flex justify-content-between align-items-start"
+							>
+								<div>
+									<h3 class="mb-1">{{ user_data.name }}</h3>
+									<div class="text-muted mb-2">
+										@{{ profile_user }}
+									</div>
+								</div>
+								<div class="mt-2 mt-md-0">
+									{% if session.get('username') ==
+									profile_user %}
+									<a
+										href="{{ url_for('settings') }}"
+										class="btn btn-outline-primary btn-sm"
+									>
+										<i class="bi bi-gear me-1"></i> Edit
+										Profile
+									</a>
+									{% else %}
+									<button
+										type="button"
+										class="btn btn-primary btn-sm follow-btn"
+									>
+										<i class="bi bi-person-plus me-1"></i>
+										Follow
+									</button>
+									{% endif %}
+								</div>
+							</div>
+
+							<div class="profile-details mt-3">
+								{% if user_data.about %}
+								<div class="mb-3">{{ user_data.about }}</div>
+								{% endif %}
+
+								<div class="d-flex flex-wrap text-muted small">
+									{% if user_data.location %}
+									<div class="me-3 mb-2">
+										<i class="bi bi-geo-alt me-1"></i> {{
+										user_data.location }}
+									</div>
+									{% endif %} {% if user_data.website %}
+									<div class="me-3 mb-2">
+										<i class="bi bi-link-45deg me-1"></i>
+										<a
+											href="{{ user_data.website|default('#') }}"
+											target="_blank"
+											rel="noopener"
+											>{{ user_data.website }}</a
+										>
+									</div>
+									{% endif %}
+
+									<div class="me-3 mb-2">
+										<i class="bi bi-calendar3 me-1"></i>
+										Joined {{ user_data.join_date }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="profile-stats mt-3 pt-3 border-top">
+						<div class="row text-center">
+							<div class="col-4 col-md-3">
+								<div class="stat-value">
+									{{ user_data.post_count }}
+								</div>
+								<div class="stat-label">Posts</div>
+							</div>
+							<div class="col-4 col-md-3">
+								<div class="stat-value">
+									{{ user_data.followers }}
+								</div>
+								<div class="stat-label">Followers</div>
+							</div>
+							<div class="col-4 col-md-3">
+								<div class="stat-value">
+									{{ user_data.following }}
+								</div>
+								<div class="stat-label">Following</div>
+							</div>
+							<div class="col-4 col-md-3 mt-3 mt-md-0">
+								<div class="stat-value">
+									{{ user_data.reputation }}
+								</div>
+								<div class="stat-label">Reputation</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Profile Tabs -->
+			<ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button
+						class="nav-link active"
+						id="posts-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#posts-tab-pane"
+						type="button"
+						role="tab"
+						aria-controls="posts-tab-pane"
+						aria-selected="true"
+					>
+						<i class="bi bi-file-text me-1"></i> Posts
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button
+						class="nav-link"
+						id="about-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#about-tab-pane"
+						type="button"
+						role="tab"
+						aria-controls="about-tab-pane"
+						aria-selected="false"
+					>
+						<i class="bi bi-person me-1"></i> About
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button
+						class="nav-link"
+						id="wallet-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#wallet-tab-pane"
+						type="button"
+						role="tab"
+						aria-controls="wallet-tab-pane"
+						aria-selected="false"
+					>
+						<i class="bi bi-wallet me-1"></i> Wallet
+					</button>
+				</li>
+			</ul>
+
+			<div class="tab-content" id="profileTabsContent">
+				<!-- Posts Tab -->
+				<div
+					class="tab-pane fade show active"
+					id="posts-tab-pane"
+					role="tabpanel"
+					aria-labelledby="posts-tab"
+					tabindex="0"
+				>
+					{% if posts %} {% for post in posts %}
+					<div class="card mb-4 post-card">
+						<div class="card-body">
+							<h4 class="card-title">
+								<a
+									href="{{ url_for('view_post', author=post.author, permlink=post.permlink) }}"
+									class="text-decoration-none"
+								>
+									{{ post.title }}
+								</a>
+							</h4>
+
+							<p class="card-text">
+								{{ post.body|truncate(200) }}
+							</p>
+
+							<div class="post-tags mb-3">
+								{% for tag in post.tags %}
+								<a
+									href="#"
+									class="badge bg-light text-dark text-decoration-none me-1"
+									>{{ tag }}</a
+								>
+								{% endfor %}
+							</div>
+
+							<div
+								class="d-flex justify-content-between align-items-center"
+							>
+								<div class="text-muted small">
+									<span class="me-3"
+										><i
+											class="bi bi-arrow-up-circle me-1"
+										></i>
+										{{ post.vote_count }}</span
+									>
+									<span class="me-3"
+										><i
+											class="bi bi-chat-left-text me-1"
+										></i>
+										{{ post.comment_count }}</span
+									>
+									<span
+										><i
+											class="bi bi-currency-dollar me-1"
+										></i>
+										{{ post.payout }}</span
+									>
+								</div>
+								<div class="text-muted small">
+									{{ post.created }}
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %} {% if is_demo %}
+					<div class="alert alert-info">
+						<i class="bi bi-info-circle me-2"></i>
+						This is demo data. Real profiles display actual posts
+						from the Hive blockchain.
+					</div>
+					{% endif %} {% else %}
+					<div class="text-center py-5">
+						<i
+							class="bi bi-file-earmark-x display-4 text-muted"
+						></i>
+						<p class="mt-3 text-muted">No posts found</p>
+					</div>
+					{% endif %}
+				</div>
+
+				<!-- About Tab -->
+				<div
+					class="tab-pane fade"
+					id="about-tab-pane"
+					role="tabpanel"
+					aria-labelledby="about-tab"
+					tabindex="0"
+				>
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title mb-4">
+								About {{ user_data.name }}
+							</h5>
+
+							{% if user_data.about %}
+							<div class="mb-4">{{ user_data.about }}</div>
+							{% else %}
+							<p class="text-muted">No bio provided</p>
+							{% endif %}
+
+							<h6 class="mt-4 mb-3">Profile Information</h6>
+							<dl class="row">
+								<dt class="col-sm-3">Reputation</dt>
+								<dd class="col-sm-9">
+									{{ user_data.reputation }}
+								</dd>
+
+								<dt class="col-sm-3">Join Date</dt>
+								<dd class="col-sm-9">
+									{{ user_data.join_date }}
+								</dd>
+
+								{% if user_data.location %}
+								<dt class="col-sm-3">Location</dt>
+								<dd class="col-sm-9">
+									{{ user_data.location }}
+								</dd>
+								{% endif %} {% if user_data.website %}
+								<dt class="col-sm-3">Website</dt>
+								<dd class="col-sm-9">
+									<a
+										href="{{ user_data.website }}"
+										target="_blank"
+										rel="noopener"
+										>{{ user_data.website }}</a
+									>
+								</dd>
+								{% endif %}
+							</dl>
+
+							{% if user_data.profile and
+							user_data.profile.get('skills') %}
+							<h6 class="mt-4 mb-3">Skills</h6>
+							<div class="d-flex flex-wrap gap-2">
+								{% for skill in user_data.profile.get('skills')
+								%}
+								<span class="badge bg-light text-dark"
+									>{{ skill }}</span
+								>
+								{% endfor %}
+							</div>
+							{% endif %}
+
+							<div class="mt-4 text-center">
+								<a
+									href="https://hiveblocks.com/@{{ profile_user }}"
+									target="_blank"
+									class="btn btn-outline-primary"
+								>
+									<i class="bi bi-box-arrow-up-right me-2"></i
+									>View on Hiveblocks
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Wallet Tab -->
+				<div
+					class="tab-pane fade"
+					id="wallet-tab-pane"
+					role="tabpanel"
+					aria-labelledby="wallet-tab"
+					tabindex="0"
+				>
+					{% if session.get('username') == profile_user %}
+					<div class="text-center py-5">
+						<a
+							href="{{ url_for('wallet') }}"
+							class="btn btn-primary btn-lg"
+						>
+							<i class="bi bi-wallet2 me-2"></i>Open Your Wallet
+						</a>
+					</div>
+					{% else %}
+					<div class="card">
+						<div class="card-body text-center py-5">
+							<i class="bi bi-lock display-4 text-muted mb-3"></i>
+							<h5>Wallet details are private</h5>
+							<p class="text-muted">
+								You can only view your own wallet details.
+								<br />Public blockchain data for {{ profile_user
+								}} is available on
+								<a
+									href="https://hiveblocks.com/@{{ profile_user }}"
+									target="_blank"
+									>Hiveblocks</a
+								>.
+							</p>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %} {% block styles %}
+<style>
+	.profile-header {
+		border-radius: 12px;
+		overflow: hidden;
+	}
+
+	.avatar-lg {
+		width: 128px;
+		height: 128px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.card-title a {
+		color: var(--text-primary);
+	}
+
+	.card-title a:hover {
+		color: var(--accent-primary);
+	}
+
+	.stat-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--accent-primary);
+	}
+
+	.stat-label {
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+	}
+
+	.post-card {
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.post-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow-md);
+	}
+
+	/* Fix avatar size on small screens */
+	@media (max-width: 767px) {
+		.avatar-lg {
+			width: 96px;
+			height: 96px;
+		}
+	}
+
+	/* Show "Demo" badge with better contrast */
+	.badge.bg-warning {
+		color: #212529;
+		font-size: 0.7rem;
+		padding: 0.25em 0.5em;
+	}
+</style>
+{% endblock %}

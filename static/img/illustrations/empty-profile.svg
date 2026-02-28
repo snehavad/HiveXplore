@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160" viewBox="0 0 240 160">
+  <defs>
+    <linearGradient id="empty-profile-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3f4f6" />
+      <stop offset="100%" stop-color="#e5e7eb" />
+    </linearGradient>
+    <linearGradient id="profile-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <circle fill="url(#empty-profile-gradient)" cx="120" cy="80" r="60"/>
+    <circle fill="url(#profile-gradient)" cx="120" cy="65" r="25"/>
+    <path fill="url(#profile-gradient)" d="M75,125 C75,107.33 95,95 120,95 C145,95 165,107.33 165,125"/>
+  </g>
+</svg>

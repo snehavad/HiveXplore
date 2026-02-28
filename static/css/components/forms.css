@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Form Components - Light/Dark Theme Compatible
+   ========================================================================== */
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+	color: var(--text-primary);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid var(--border-input);
+	border-radius: 4px;
+	font-size: 16px;
+	background-color: var(--bg-input);
+	color: var(--text-primary);
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+	border-color: var(--accent-primary);
+	box-shadow: 0 0 0 0.2rem rgba(var(--accent-primary-rgb), 0.15);
+	outline: none;
+}
+
+.form-control:focus {
+	border-color: var(--accent-primary);
+	box-shadow: 0 0 0 0.2rem rgba(var(--accent-primary-rgb), 0.15);
+}
+
+.form-floating input,
+.form-floating textarea {
+	background-color: var(--bg-input);
+	border-color: var(--border-input);
+	color: var(--text-primary);
+}
+
+.form-floating label {
+	color: var(--text-secondary);
+	transition: opacity .1s ease-in-out, transform .1s ease-in-out, color 0.3s ease;
+}
+
+/* Fix for dark mode floating labels */
+body.dark-mode .form-floating label {
+	color: var(--text-secondary);
+}
+
+body.dark-mode .form-floating>.form-control:focus~label,
+body.dark-mode .form-floating>.form-control:not(:placeholder-shown)~label {
+	color: var(--accent-light);
+	opacity: 0.9;
+}
+
+body.dark-mode .form-floating>.form-control:-webkit-autofill~label {
+	color: var(--accent-light);
+	opacity: 0.9;
+}
+
+/* Login Form Inputs */
+.login-section .form-control {
+	padding: 0.75rem 1rem;
+	border-color: var(--border-input);
+	border-radius: 10px;
+	transition: all 0.2s ease;
+	background-color: var(--bg-input);
+	color: var(--text-primary);
+}
+
+.login-section .form-control:focus {
+	border-color: var(--accent-primary);
+	box-shadow: 0 0 0 0.2rem rgba(var(--accent-primary-rgb), 0.15);
+}

@@ -1,0 +1,17 @@
+flask
+python-dotenv
+click
+requests
+pydot
+pytz
+Flask-WTF
+Werkzeug
+Jinja2
+MarkupSafe
+itsdangerous
+waitress
+beem
+python-slugify
+pycryptodome
+markdown
+bleach

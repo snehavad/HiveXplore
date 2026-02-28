@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="error-bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fee2e2" />
+      <stop offset="100%" stop-color="#fecaca" />
+    </linearGradient>
+    <linearGradient id="error-accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#dc2626" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background triangle -->
+  <path d="M200,50 L320,230 L80,230 Z" fill="url(#error-bg-gradient)" />
+
+  <!-- Exclamation mark -->
+  <g fill="url(#error-accent-gradient)">
+    <rect x="190" y="100" width="20" height="80" rx="10" />
+    <circle cx="200" cy="200" r="12" />
+  </g>
+
+  <!-- Warning symbol outline -->
+  <path d="M200,60 L320,220 L80,220 Z" fill="none" stroke="url(#error-accent-gradient)" stroke-width="6" />
+
+  <!-- Decorative elements -->
+  <g fill-opacity="0.6">
+    <circle cx="100" cy="80" r="5" fill="url(#error-accent-gradient)" />
+    <circle cx="300" cy="90" r="8" fill="url(#error-accent-gradient)" />
+    <circle cx="150" cy="250" r="7" fill="url(#error-accent-gradient)" />
+    <circle cx="250" cy="260" r="4" fill="url(#error-accent-gradient)" />
+  </g>
+</svg>

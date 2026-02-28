@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160" viewBox="0 0 240 160">
+  <defs>
+    <linearGradient id="empty-wallet-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3f4f6" />
+      <stop offset="100%" stop-color="#e5e7eb" />
+    </linearGradient>
+    <linearGradient id="wallet-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <path fill="url(#empty-wallet-gradient)" d="M55,40 L185,40 C190.52,40 195,44.48 195,50 L195,110 C195,115.52 190.52,120 185,120 L55,120 C49.48,120 45,115.52 45,110 L45,50 C45,44.48 49.48,40 55,40 Z"/>
+    <path fill="url(#wallet-gradient)" d="M185,65 L185,95 L165,95 C159.48,95 155,90.52 155,85 C155,79.48 159.48,75 165,75 L185,75 L185,65 Z"/>
+    <circle fill="#FFFFFF" cx="165" cy="85" r="5"/>
+    <path d="M75,65 L125,65 M75,80 L115,80 M75,95 L95,95" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

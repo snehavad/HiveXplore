@@ -1,0 +1,540 @@
+{% extends 'base.html' %}
+{% block title %}Settings - HiveBuzz{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="settings-container">
+        <h2>User Settings</h2>
+        <p class="text-muted">Customize your HiveBuzz experience</p>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Interface Preferences</h4>
+            </div>
+            <div class="card-body">
+                <form id="interface-settings-form" class="settings-form" method="POST" action="{{ url_for('settings') }}">
+                    <!-- Dark Mode -->
+                    <div class="mb-4">
+                        <h5>Theme Mode</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="form-check form-switch">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    id="darkModeSwitch"
+                                    name="dark_mode"
+                                    {% if preferences.dark_mode %}checked{% endif %}
+                                />
+                                <label
+                                    class="form-check-label"
+                                    for="darkModeSwitch"
+                                >
+                                    Enable dark mode
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Color -->
+                    <div class="mb-4">
+                        <h5>Theme Color</h5>
+                        <div class="color-options">
+                            <div class="color-option-wrapper">
+                                <input type="radio" name="theme_color"
+                                id="colorBlue" value="blue" {% if
+                                preferences.theme_color == "blue" %}checked{%
+                                endif %} class="color-radio">
+                                <label for="colorBlue" class="color-swatch"
+                                    style="background-color: #0d6efd"></label>
+                                <span class="color-name">Blue</span>
+                            </div>
+                            <div class="color-option-wrapper">
+                                <input type="radio" name="theme_color"
+                                id="colorGreen" value="green" {% if
+                                preferences.theme_color == "green" %}checked{%
+                                endif %} class="color-radio">
+                                <label for="colorGreen" class="color-swatch"
+                                    style="background-color: #198754"></label>
+                                <span class="color-name">Green</span>
+                            </div>
+                            <div class="color-option-wrapper">
+                                <input type="radio" name="theme_color"
+                                id="colorPurple" value="purple" {% if
+                                preferences.theme_color == "purple" %}checked{%
+                                endif %} class="color-radio">
+                                <label for="colorPurple" class="color-swatch"
+                                    style="background-color: #6f42c1"></label>
+                                <span class="color-name">Purple</span>
+                            </div>
+                            <div class="color-option-wrapper">
+                                <input type="radio" name="theme_color"
+                                id="colorOrange" value="orange" {% if
+                                preferences.theme_color == "orange" %}checked{%
+                                endif %} class="color-radio">
+                                <label for="colorOrange" class="color-swatch"
+                                    style="background-color: #fd7e14"></label>
+                                <span class="color-name">Orange</span>
+                            </div>
+                            <div class="color-option-wrapper">
+                                <input type="radio" name="theme_color"
+                                id="colorRed" value="red" {% if
+                                preferences.theme_color == "red" %}checked{%
+                                endif %} class="color-radio">
+                                <label for="colorRed" class="color-swatch"
+                                    style="background-color: #dc3545"></label>
+                                <span class="color-name">Red</span>
+                            </div>
+                            <div class="color-option-wrapper">
+                                <input type="radio" name="theme_color"
+                                id="colorCustom" value="custom" {% if
+                                preferences.theme_color == "custom" %}checked{%
+                                endif %} class="color-radio">
+                                <input
+                                    type="color"
+                                    id="customColorPicker"
+                                    name="custom_color"
+                                    class="custom-color-picker"
+                                    value="{{ preferences.custom_color|default('#7367f0') }}"
+                                    {% if preferences.theme_color != "custom" %}disabled{% endif %}
+                                />
+                                <span class="color-name">Custom</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Display -->
+                    <div class="mb-4">
+                        <h5>Content Display</h5>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    id="displayNSFW"
+                                    name="display_nsfw"
+                                    {% if preferences.display_nsfw %}checked{% endif %}
+                                >
+                                <label class="form-check-label" for="displayNSFW">
+                                    Show sensitive (NSFW) content
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Language -->
+                    <div class="mb-4">
+                        <h5>Language</h5>
+                        <select class="form-select" id="languageSelect" name="language">
+                            <option value="en" {% if preferences.language == "en" %}selected{% endif %}>English</option>
+                            <option value="es" {% if preferences.language == "es" %}selected{% endif %}>Español</option>
+                            <option value="fr" {% if preferences.language == "fr" %}selected{% endif %}>Français</option>
+                            <option value="de" {% if preferences.language == "de" %}selected{% endif %}>Deutsch</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            Save Interface Preferences
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Notification Preferences</h4>
+            </div>
+            <div class="card-body">
+                <form id="notification-settings-form" class="settings-form">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="notifyComments"
+                                {% if preferences.notify_comments %}checked{% endif %}
+                            />
+                            <label class="form-check-label" for="notifyComments">
+                                Notify me when someone comments on my posts
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="notifyUpvotes"
+                                {% if preferences.notify_upvotes %}checked{% endif %}
+                            />
+                            <label class="form-check-label" for="notifyUpvotes">
+                                Notify me when someone upvotes my posts
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="notifyFollows"
+                                {% if preferences.notify_follows %}checked{% endif %}
+                            />
+                            <label class="form-check-label" for="notifyFollows">
+                                Notify me when someone follows me
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            Save Notification Preferences
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Privacy Settings</h4>
+            </div>
+            <div class="card-body">
+                <form id="privacy-settings-form" class="settings-form">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="showVotingValue"
+                                {% if preferences.show_voting_value %}checked{% endif %}
+                            />
+                            <label class="form-check-label" for="showVotingValue">
+                                Show the estimated value of my upvotes
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="showProfile"
+                                {% if preferences.show_profile %}checked{% endif %}
+                            />
+                            <label class="form-check-label" for="showProfile">
+                                Make my profile visible to non-logged in users
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            Save Privacy Preferences
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .settings-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .color-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .color-option-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70px;
+    }
+
+    .color-radio {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .color-swatch {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: all 0.2s;
+    }
+
+    .color-radio:checked + .color-swatch {
+        box-shadow: 0 0 0 3px var(--bs-body-bg), 0 0 0 6px var(--accent-primary);
+        transform: scale(1.1);
+    }
+
+    .color-name {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .custom-color-picker {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: all 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+        overflow: hidden;
+    }
+
+    .custom-color-picker::-webkit-color-swatch-wrapper {
+        padding: 0;
+    }
+
+    .custom-color-picker::-webkit-color-swatch {
+        border: none;
+        border-radius: 50%;
+    }
+
+    .color-radio:checked ~ .custom-color-picker {
+        box-shadow: 0 0 0 3px var(--bs-body-bg), 0 0 0 6px var(--accent-primary);
+        transform: scale(1.1);
+    }
+
+    #colorCustom:checked ~ .color-name {
+        font-weight: bold;
+        color: var(--accent-primary);
+    }
+
+    .settings-form {
+        max-width: 100%;
+    }
+
+    @media (max-width: 576px) {
+        .color-options {
+            gap: 0.5rem;
+        }
+
+        .color-option-wrapper {
+            width: 60px;
+        }
+
+        .color-swatch, .custom-color-picker {
+            width: 35px;
+            height: 35px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Custom color picker handling
+        const customRadio = document.getElementById('colorCustom');
+        const customColorPicker = document.getElementById('customColorPicker');
+
+        // Enable/disable custom color picker based on radio selection
+        function toggleCustomColorPicker() {
+            customColorPicker.disabled = !customRadio.checked;
+        }
+
+        // Initialize state
+        toggleCustomColorPicker();
+
+        // Handle radio changes
+        document.querySelectorAll('input[name="theme_color"]').forEach(radio => {
+            radio.addEventListener('change', toggleCustomColorPicker);
+        });
+
+        // When custom color picker is clicked, also select its radio
+        customColorPicker.addEventListener('click', function() {
+            customRadio.checked = true;
+            toggleCustomColorPicker();
+        });
+
+        // Preview theme changes immediately
+        function previewThemeChanges() {
+            // Get selected theme
+            const selectedTheme = document.querySelector('input[name="theme_color"]:checked').value;
+            const isDarkMode = document.getElementById('darkModeSwitch').checked;
+
+            // Remove all theme classes
+            document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-orange', 'theme-red', 'theme-custom');
+
+            // Apply dark mode
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.documentElement.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.documentElement.classList.remove('dark-mode');
+            }
+
+            // Apply selected theme
+            if (selectedTheme === 'custom') {
+                document.body.classList.add('theme-custom');
+
+                // Get the custom color
+                const customColor = customColorPicker.value;
+
+                // Create and apply CSS variables for custom theme
+                const customThemeStyle = document.getElementById('custom-theme-style') || document.createElement('style');
+                customThemeStyle.id = 'custom-theme-style';
+
+                // Create CSS with proper light/dark variants of the color
+                const customColorRgb = hexToRGB(customColor);
+                const cssVars = `
+                    :root {
+                        --accent-primary: ${customColor};
+                        --accent-primary-rgb: ${customColorRgb.join(',')};
+                        --accent-light: ${lightenColor(customColor, 20)};
+                        --accent-dark: ${darkenColor(customColor, 20)};
+                    }
+                `;
+
+                customThemeStyle.textContent = cssVars;
+
+                // Add to document if not already there
+                if (!document.getElementById('custom-theme-style')) {
+                    document.head.appendChild(customThemeStyle);
+                }
+            } else {
+                document.body.classList.add(`theme-${selectedTheme}`);
+            }
+        }
+
+        // Attach preview function to theme controls
+        document.getElementById('darkModeSwitch').addEventListener('change', previewThemeChanges);
+        document.querySelectorAll('input[name="theme_color"]').forEach(radio => {
+            radio.addEventListener('change', previewThemeChanges);
+        });
+        customColorPicker.addEventListener('input', previewThemeChanges);
+
+        // API functions for notification and privacy settings forms
+        const notificationForm = document.getElementById("notification-settings-form");
+        notificationForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const preferences = {
+                notify_comments: document.getElementById("notifyComments").checked,
+                notify_upvotes: document.getElementById("notifyUpvotes").checked,
+                notify_follows: document.getElementById("notifyFollows").checked,
+            };
+
+            savePreferences(preferences, notificationForm);
+        });
+
+        // Privacy settings form
+        const privacyForm = document.getElementById("privacy-settings-form");
+        privacyForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const preferences = {
+                show_voting_value: document.getElementById("showVotingValue").checked,
+                show_profile: document.getElementById("showProfile").checked,
+            };
+
+            savePreferences(preferences, privacyForm);
+        });
+
+        // Save preferences to the server
+        function savePreferences(preferences, form) {
+            fetch("/api/user/preferences", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(preferences),
+            })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error("Failed to save preferences");
+            })
+            .then((data) => {
+                // Show success message
+                const alert = document.createElement("div");
+                alert.className = "alert alert-success alert-dismissible fade show";
+                alert.innerHTML = `
+                    Preferences saved successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+
+                // Add alert before the form
+                form.parentNode.insertBefore(alert, form);
+
+                // Auto dismiss after 3 seconds
+                setTimeout(() => {
+                    alert.classList.remove('show');
+                    setTimeout(() => alert.remove(), 300);
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error("Error saving preferences:", error);
+
+                // Show error message
+                const alert = document.createElement("div");
+                alert.className = "alert alert-danger alert-dismissible fade show";
+                alert.innerHTML = `
+                    Failed to save preferences. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+
+                // Add alert before the form
+                form.parentNode.insertBefore(alert, form);
+            });
+        }
+
+        // Helper functions for color manipulation
+        function hexToRGB(hex) {
+            hex = hex.replace('#', '');
+            return [
+                parseInt(hex.substring(0, 2), 16),
+                parseInt(hex.substring(2, 4), 16),
+                parseInt(hex.substring(4, 6), 16)
+            ];
+        }
+
+        function lightenColor(hex, percent) {
+            const rgb = hexToRGB(hex);
+            const newRgb = rgb.map(val => {
+                return Math.min(255, Math.round(val + (255 - val) * (percent / 100)));
+            });
+            return rgbToHex(newRgb[0], newRgb[1], newRgb[2]);
+        }
+
+        function darkenColor(hex, percent) {
+            const rgb = hexToRGB(hex);
+            const newRgb = rgb.map(val => {
+                return Math.max(0, Math.round(val * (1 - percent / 100)));
+            });
+            return rgbToHex(newRgb[0], newRgb[1], newRgb[2]);
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+    });
+</script>
+{% endblock %}

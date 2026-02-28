@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - HiveBuzz{% endblock %}
+{% block content %}
+{% set current_user = g.user if g.user else {'username': session.get('username')|default('demo'), 'name': 'Hive User'} %}
+<div class="container py-4">
+	<h1 class="mb-4">Dashboard</h1>
+
+	{% if is_demo %}
+	<div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
+		<i class="bi bi-info-circle-fill me-2"></i>
+		You are currently using a demo account. Data shown is simulated and not from the actual blockchain.
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+	{% endif %}
+
+	<div class="row">
+		<!-- Left Column: User Info & Stats -->
+		<div class="col-lg-4 mb-4">
+			<!-- User Profile Card -->
+			<div class="card mb-4">
+				<div class="card-body text-center">
+					<img src="https://images.hive.blog/u/{{ current_user.username }}/avatar"
+						class="avatar-lg mb-3 rounded-circle" alt="{{ current_user.username }}" />
+					<h4 class="mb-1">@{{ current_user.username }}</h4>
+					<p class="text-muted">{{ current_user.name if current_user.name else 'Hive User' }}</p>
+					<div class="d-flex justify-content-center">
+						<a href="{{ url_for('profile', username=current_user.username) }}" class="btn btn-sm btn-outline-primary">
+							View Profile
+						</a>
+						{% if not is_demo %}
+						<a href="https://hive.blog/@{{ current_user.username }}" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">
+							<i class="bi bi-box-arrow-up-right"></i> Hive Blog
+						</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+
+			<!-- Dashboard Stat Cards with better styling -->
+			<div class="card mb-4">
+				<div class="card-header">
+					<h5 class="mb-0">Your Stats</h5>
+				</div>
+				<div class="card-body">
+					<div class="row g-3">
+						<div class="col-6">
+							<div class="p-3 border rounded text-center">
+								<div class="stat-icon">📊</div>
+								<h6 class="mt-2 mb-0">{{ stats.posts_count|default(0) }}</h6>
+								<small class="text-muted">Posts</small>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="p-3 border rounded text-center">
+								<div class="stat-icon">💰</div>
+								<h6 class="mt-2 mb-0">{{ stats.wallet.hbd|default('0.000') }}</h6>
+								<small class="text-muted">HBD</small>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="p-3 border rounded text-center">
+								<div class="stat-icon">👥</div>
+								<h6 class="mt-2 mb-0">{{ stats.followers|default(0) }}</h6>
+								<small class="text-muted">Followers</small>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="p-3 border rounded text-center">
+								<div class="stat-icon">👤</div>
+								<h6 class="mt-2 mb-0">{{ stats.following|default(0) }}</h6>
+								<small class="text-muted">Following</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Quick Actions</h5>
+				</div>
+				<div class="card-body">
+					<div class="d-grid gap-2">
+						<a href="{{ url_for('posts') }}" class="btn btn-outline-primary">
+							<i class="bi bi-newspaper me-2"></i>View Posts
+						</a>
+						<a href="{{ url_for('create_post') }}" class="btn btn-primary">
+							<i class="bi bi-pencil-square me-2"></i>Create New Post
+						</a>
+						<a href="{{ url_for('wallet') }}" class="btn btn-outline-secondary">
+							<i class="bi bi-wallet2 me-2"></i>Manage Wallet
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Recent Activity</h5>
+					<button id="refresh-activity" class="btn btn-sm btn-outline-secondary">
+						<i class="bi bi-arrow-clockwise"></i>
+					</button>
+				</div>
+				<div class="card-body p-0">
+					<div id="activity-feed">
+						{% if activity and activity|length > 0 %}
+							<ul class="list-group list-group-flush">
+								{% for item in activity %}
+									<li class="list-group-item py-3">
+										<div class="d-flex">
+											<div class="activity-icon me-3">
+												<i class="bi {% if item.type == 'view' %}bi-eye{% elif item.type == 'post' %}bi-file-text{% elif item.type == 'auth' %}bi-key{% else %}bi-check-circle{% endif %}"></i>
+											</div>
+											<div>
+												{% if item.link %}
+													<a href="{{ item.link }}" class="activity-title">{{ item.title }}</a>
+												{% else %}
+													<span class="activity-title">{{ item.title }}</span>
+												{% endif %}
+												<small class="activity-time d-block">{{ item.time }}</small>
+											</div>
+										</div>
+									</li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<div class="text-center py-4">
+								<i class="bi bi-calendar3 fs-2 text-muted"></i>
+								<p class="mt-2 mb-0 text-muted">No recent activity</p>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Right Column: Trending Posts -->
+		<div class="col-lg-8">
+			<div class="card mb-4">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Trending Posts</h5>
+					<a href="{{ url_for('posts') }}" class="btn btn-sm btn-outline-primary">View All</a>
+				</div>
+				<div class="card-body">
+					{% if trending and trending|length > 0 %}
+						<div class="trending-posts-container">
+							<div class="trending-posts-scroll">
+								{% for post in trending %}
+									<div class="trending-post-item">
+										<div class="d-flex">
+											<div class="trending-post-image me-3">
+												<a href="{{ url_for('view_post', author=post.author, permlink=post.permlink) }}">
+													{% if post.image %}
+														<img src="{{ post.image }}" alt="Post image" onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/placeholder.jpg') }}';">
+													{% else %}
+														<div class="post-image-placeholder">
+															<i class="bi bi-card-text"></i>
+														</div>
+													{% endif %}
+												</a>
+											</div>
+											<div class="trending-post-content">
+												<h6 class="trending-post-title">
+													<a href="{{ url_for('view_post', author=post.author, permlink=post.permlink) }}" class="text-decoration-none">
+														{{ post.title|truncate(60) }}
+													</a>
+												</h6>
+												<div class="d-flex align-items-center mb-2">
+													<a href="{{ url_for('profile', username=post.author) }}" class="text-decoration-none">
+														<small>@{{ post.author }}</small>
+													</a>
+													<small class="text-muted ms-auto">{{ post.created }}</small>
+												</div>
+												<p class="trending-post-excerpt">
+													{{ post.body|striptags|truncate(100) }}
+												</p>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					{% else %}
+						<div class="text-center py-4">
+							<i class="bi bi-newspaper fs-2 text-muted"></i>
+							<p class="mt-2 mb-0 text-muted">No trending posts available</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<h5 class="mb-0">Your Feed</h5>
+				</div>
+				<div class="card-body">
+					<p>Personalized feed coming soon! For now, check out the trending posts.</p>
+					<a href="{{ url_for('posts') }}" class="btn btn-primary">Browse Posts</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Refresh button functionality
+		const refreshBtn = document.getElementById("refresh-activity");
+		if (refreshBtn) {
+			refreshBtn.addEventListener("click", function () {
+				const activityFeed = document.getElementById("activity-feed");
+				// Show loading state
+				if (activityFeed) {
+					activityFeed.innerHTML = `
+						<div class="text-center py-4">
+							<div class="spinner-border text-primary" role="status"></div>
+							<p class="mt-3 mb-0">Loading your activity...</p>
+						</div>
+					`;
+				}
+
+				// Reload the page after a short delay
+				setTimeout(() => {
+					window.location.reload();
+				}, 500);
+			});
+		}
+	});
+</script>
+{% endblock %}

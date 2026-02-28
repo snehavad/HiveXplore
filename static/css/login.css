@@ -1,0 +1,300 @@
+/* ==========================================================================
+   HiveBuzz Login Page Styles - Light/Dark Theme System
+   ========================================================================== */
+
+/* 1. Container Styles */
+.login-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem 1rem;
+}
+
+.login-header {
+	text-align: center;
+	margin-bottom: 2.5rem;
+}
+
+.login-header img {
+	max-width: 120px;
+	margin-bottom: 1.5rem;
+}
+
+/* 2. Login Section Cards */
+.login-section {
+	background-color: var(--bg-card);
+	border-radius: 12px;
+	box-shadow: var(--shadow-md);
+	margin-bottom: 2rem;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	overflow: hidden;
+	border: 1px solid var(--border-color);
+}
+
+.login-section:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-lg);
+}
+
+.login-section-header {
+	padding: 1.5rem;
+	border-bottom: 1px solid var(--border-color);
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	background-color: rgba(var(--accent-primary-rgb), 0.05);
+}
+
+.login-section-body {
+	padding: 1.5rem;
+}
+
+/* 3. Icons & Visual Elements */
+.login-icon {
+	font-size: 1.5rem;
+	width: 3rem;
+	height: 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 12px;
+	color: white;
+	box-shadow: var(--shadow-sm);
+}
+
+.icon-keychain {
+	background: linear-gradient(135deg, #5c6cff, #3947c4);
+}
+
+.icon-hiveauth {
+	background: linear-gradient(135deg, #ff6b6b, #cc0000);
+}
+
+.icon-hivesigner {
+	background: linear-gradient(135deg, #4a77e0, #2855b9);
+}
+
+.icon-demo {
+	background: linear-gradient(135deg, #38b2ac, #2c8c87);
+}
+
+/* 4. Typography Elements */
+.section-title {
+	margin: 0;
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.section-subtitle {
+	color: var(--text-secondary);
+	margin: 0;
+	font-size: 0.9rem;
+}
+
+/* 5. Form Elements */
+.login-section .form-control {
+	padding: 0.75rem 1rem;
+	border-color: var(--border-input);
+	border-radius: 10px;
+	transition: all 0.2s ease;
+	background-color: var(--bg-input);
+	color: var(--text-primary);
+}
+
+.login-section .form-control:focus {
+	border-color: var(--accent-primary);
+	box-shadow: 0 0 0 0.2rem rgba(var(--accent-primary-rgb), 0.15);
+}
+
+.login-section .btn {
+	padding: 0.75rem 1rem;
+	font-weight: 500;
+	border-radius: 10px;
+	transition: all 0.2s ease;
+}
+
+/* Fix for form-floating labels in dark mode on login page */
+body.dark-mode .login-section .form-floating label {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+body.dark-mode .login-section .form-floating>.form-control:focus~label,
+body.dark-mode .login-section .form-floating>.form-control:not(:placeholder-shown)~label {
+	color: var(--accent-light);
+}
+
+/* Login Buttons with unique gradient styling */
+.keychain-btn {
+	background: linear-gradient(135deg, #5c6cff, #3947c4);
+	border-color: #3947c4;
+	transition: all 0.3s ease;
+}
+
+.keychain-btn:hover {
+	background: linear-gradient(135deg, #4a57e8, #2d39a8);
+	border-color: #2d39a8;
+	transform: translateY(-2px);
+}
+
+.hiveauth-btn {
+	background: linear-gradient(135deg, #ff6b6b, #cc0000);
+	border-color: #cc0000;
+	transition: all 0.3s ease;
+}
+
+.hiveauth-btn:hover {
+	background: linear-gradient(135deg, #e85e5e, #b00000);
+	border-color: #b00000;
+	transform: translateY(-2px);
+}
+
+.hivesigner-btn {
+	background: linear-gradient(135deg, #4a77e0, #2855b9);
+	border-color: #2855b9;
+	transition: all 0.3s ease;
+}
+
+.hivesigner-btn:hover {
+	background: linear-gradient(135deg, #3d66c9, #224aa3);
+	border-color: #224aa3;
+	transform: translateY(-2px);
+}
+
+/* In theme colors mode, override with accent colors when theme is changed */
+body.theme-green .btn-primary {
+	background: var(--accent-primary);
+	border-color: var(--accent-primary);
+}
+
+body.theme-green .btn-primary:hover {
+	background: var(--accent-darker);
+	border-color: var(--accent-darker);
+}
+
+body.theme-purple .btn-primary,
+body.theme-red .btn-primary,
+body.theme-orange .btn-primary,
+body.theme-teal .btn-primary {
+	background: var(--accent-primary);
+	border-color: var(--accent-primary);
+}
+
+body.theme-purple .btn-primary:hover,
+body.theme-red .btn-primary:hover,
+body.theme-orange .btn-primary:hover,
+body.theme-teal .btn-primary:hover {
+	background: var(--accent-darker);
+	border-color: var(--accent-darker);
+}
+
+/* 6. QR Code Container */
+.qr-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	margin-top: 1rem;
+	border: 2px dashed var(--border-color);
+	border-radius: 12px;
+	background-color: var(--bg-hover);
+}
+
+/* 7. Spinner & Loading Elements */
+.spinner-container {
+	display: flex;
+	align-items: center;
+	margin-top: 1rem;
+	gap: 0.5rem;
+}
+
+.spinner-border {
+	width: 1.2rem;
+	height: 1.2rem;
+	border-width: 0.2em;
+}
+
+/* 8. Help Section */
+.login-help {
+	margin-top: 2rem;
+	padding: 1.5rem;
+	background-color: var(--bg-hover);
+	border-radius: 10px;
+	border: 1px solid var(--border-color);
+}
+
+.help-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.help-item {
+	margin-top: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--border-color);
+}
+
+.help-item h5 {
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--text-primary);
+}
+
+.help-item p {
+	color: var(--text-secondary);
+}
+
+/* 9. Animation for login methods */
+.login-section {
+	animation: fadeInUp 0.5s ease forwards;
+	opacity: 0;
+}
+
+.login-section:nth-child(1) {
+	animation-delay: 0.1s;
+}
+
+.login-section:nth-child(2) {
+	animation-delay: 0.2s;
+}
+
+.login-section:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+.login-section:nth-child(4) {
+	animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* 10. Responsive Adjustments */
+@media (max-width: 576px) {
+	.login-section-header {
+		flex-direction: column;
+		padding: 1rem;
+		text-align: center;
+	}
+
+	.login-section-body {
+		padding: 1rem;
+	}
+
+	.login-icon {
+		margin-bottom: 0.5rem;
+	}
+}

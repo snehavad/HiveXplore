@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Error - HiveBuzz{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content text-center">
+        <div class="error-image mb-4">
+            <img src="{{ url_for('static', filename='img/illustrations/error.svg') }}" alt="Error" class="img-fluid"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2RjMzU0NSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEwLjI5IDMuODZMMS44MiAxOGEyIDIgMCAwIDAgMS43MSAzaDE2Ljk0YTIgMiAwIDAgMCAxLjcxLTNMMTMuNzEgMy44NmEyIDIgMCAwIDAtMy40MiAweiI+PC9wYXRoPjxsaW5lIHgxPSIxMiIgeTE9IjkiIHgyPSIxMiIgeTI9IjEzIj48L2xpbmU+PGxpbmUgeDE9IjEyIiB5MT0iMTciIHgyPSIxMiIgeTI9IjE3Ij48L2xpbmU+PC9zdmc+';">
+        </div>
+        <h1 class="error-title mb-3">Oops! Something Went Wrong</h1>
+        <div class="error-box mb-4">
+            <p class="error-message">{{ error }}</p>
+        </div>
+        <p class="error-description mb-5">
+            We're sorry, but we encountered an unexpected issue. Please try again later.
+        </p>
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                <i class="bi bi-house-door me-2"></i> Go Home
+            </a>
+            <button onclick="window.history.back()" class="btn btn-outline-secondary ms-3">
+                <i class="bi bi-arrow-left me-2"></i> Go Back
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .error-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        padding: 2rem;
+    }
+
+    .error-content {
+        max-width: 600px;
+    }
+
+    .error-image img {
+        max-height: 180px;
+    }
+
+    .error-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--danger);
+    }
+
+    .error-box {
+        background-color: var(--bg-hover);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid var(--danger);
+    }
+
+    .error-message {
+        margin-bottom: 0;
+        font-family: monospace;
+        word-break: break-word;
+    }
+
+    .error-description {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}

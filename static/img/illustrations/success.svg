@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="success-bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dcfce7" />
+      <stop offset="100%" stop-color="#bbf7d0" />
+    </linearGradient>
+    <linearGradient id="success-accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e" />
+      <stop offset="100%" stop-color="#16a34a" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="200" cy="150" r="100" fill="url(#success-bg-gradient)" />
+
+  <!-- Check mark -->
+  <path d="M150,150 L180,180 L250,110" stroke="url(#success-accent-gradient)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Success circle outline -->
+  <circle cx="200" cy="150" r="90" fill="none" stroke="url(#success-accent-gradient)" stroke-width="6" />
+
+  <!-- Decorative elements -->
+  <g fill-opacity="0.6">
+    <circle cx="100" cy="80" r="5" fill="url(#success-accent-gradient)" />
+    <circle cx="300" cy="90" r="8" fill="url(#success-accent-gradient)" />
+    <circle cx="120" cy="220" r="7" fill="url(#success-accent-gradient)" />
+    <circle cx="280" cy="230" r="4" fill="url(#success-accent-gradient)" />
+    <circle cx="200" cy="50" r="6" fill="url(#success-accent-gradient)" />
+    <circle cx="200" cy="250" r="6" fill="url(#success-accent-gradient)" />
+  </g>
+</svg>

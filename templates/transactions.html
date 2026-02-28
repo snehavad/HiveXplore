@@ -1,0 +1,297 @@
+{% extends "base.html" %} {% block title %}Transactions - HiveBuzz{% endblock %}
+{% block content %}
+<div class="transactions-container">
+	<h1 class="mb-4">Blockchain Transactions</h1>
+	<p class="text-muted mb-4">
+		View your transaction history and recent activity on the Hive blockchain
+	</p>
+
+	{% if error %}
+	<div class="alert alert-danger">
+		<i class="bi bi-exclamation-triangle-fill"></i>
+		There was an error loading transaction data. Please try again later.
+	</div>
+	{% endif %}
+
+	<div class="card mb-4">
+		<div
+			class="card-header d-flex justify-content-between align-items-center"
+		>
+			<h5 class="mb-0">My Account Activity</h5>
+			<button
+				class="btn btn-sm btn-outline-primary"
+				id="refreshTransactionsBtn"
+			>
+				<i class="bi bi-arrow-clockwise"></i> Refresh
+			</button>
+		</div>
+		<div class="card-body p-0">
+			<div class="table-responsive">
+				<table class="table table-hover transactions-table">
+					<thead>
+						<tr>
+							<th>Type</th>
+							<th>Details</th>
+							<th>Amount/Info</th>
+							<th>Date</th>
+							<th>TX ID</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if user_history and user_history|length > 0 %} {% for
+						tx in user_history %}
+						<tr>
+							<td>
+								{% if tx.type == 'transfer' %}
+								<span class="badge bg-primary">Transfer</span>
+								{% elif tx.type == 'claim_reward_balance' %}
+								<span class="badge bg-success">Reward</span>
+								{% elif tx.type == 'comment' and
+								tx.parent_author == '' %}
+								<span class="badge bg-info">Post</span>
+								{% elif tx.type == 'comment' %}
+								<span class="badge bg-info">Comment</span>
+								{% elif tx.type == 'vote' %}
+								<span class="badge bg-warning">Vote</span>
+								{% elif tx.type == 'delegate_vesting_shares' %}
+								<span class="badge bg-secondary"
+									>Delegation</span
+								>
+								{% else %}
+								<span class="badge bg-dark">{{ tx.type }}</span>
+								{% endif %}
+							</td>
+							<td>
+								{% if tx.type == 'transfer' %} {% if tx.from ==
+								username %} Sent to
+								<strong>{{ tx.to }}</strong> {% else %} Received
+								from <strong>{{ tx.from }}</strong>
+								{% endif %} {% if tx.memo %}
+								<div class="transaction-memo">
+									{{ tx.memo }}
+								</div>
+								{% endif %} {% elif tx.type ==
+								'claim_reward_balance' %} Claimed rewards {%
+								elif tx.type == 'comment' and tx.parent_author
+								== '' %} New post: "{{ tx.title|truncate(30) }}"
+								{% elif tx.type == 'comment' %} Comment on @{{
+								tx.parent_author }}'s post {% elif tx.type ==
+								'vote' %} Voted on @{{ tx.author }}'s post {%
+								elif tx.type == 'delegate_vesting_shares' %} {%
+								if tx.delegator == username %} Delegated to
+								<strong>{{ tx.delegatee }}</strong> {% else %}
+								Received delegation from
+								<strong>{{ tx.delegator }}</strong>
+								{% endif %} {% else %} {{
+								tx.details|default('-') }} {% endif %}
+							</td>
+							<td>
+								{% if tx.type == 'transfer' %}
+								<span
+									class="{{ 'text-success' if tx.to == username else 'text-danger' }}"
+								>
+									{{ '+' if tx.to == username else '-' }} {{
+									tx.amount }}
+								</span>
+								{% elif tx.type == 'claim_reward_balance' %}
+								<span class="text-success">
+									+ {{ tx.reward_hive }}<br />
+									+ {{ tx.reward_hbd }}<br />
+									+ {{ tx.reward_vests }}
+								</span>
+								{% elif tx.type == 'vote' %} {{ tx.weight / 100
+								}}% {% elif tx.type == 'delegate_vesting_shares'
+								%} {{ tx.vesting_shares }} {% else %} - {% endif
+								%}
+							</td>
+							<td>{{ tx.timestamp }}</td>
+							<td>
+								{% if tx.transaction_id %}
+								<a
+									href="https://hiveblocks.com/tx/{{ tx.transaction_id }}"
+									target="_blank"
+									title="View on Hiveblocks"
+								>
+									{{ tx.transaction_id[:8] }}...
+								</a>
+								{% else %} - {% endif %}
+							</td>
+						</tr>
+						{% endfor %} {% else %}
+						<tr>
+							<td colspan="5" class="text-center py-4">
+								No transaction history found
+							</td>
+						</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			<h5 class="mb-0">Recent Network Transactions</h5>
+		</div>
+		<div class="card-body p-0">
+			<div class="table-responsive">
+				<table class="table table-hover transactions-table">
+					<thead>
+						<tr>
+							<th>Type</th>
+							<th>Details</th>
+							<th>Amount</th>
+							<th>Date</th>
+							<th>Block</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if recent_transactions and recent_transactions|length
+						> 0 %} {% for tx in recent_transactions %}
+						<tr>
+							<td>
+								{% if tx.type == 'transfer' %}
+								<span class="badge bg-primary">Transfer</span>
+								{% elif tx.type == 'claim_reward_balance' %}
+								<span class="badge bg-success">Reward</span>
+								{% elif tx.type == 'comment' %}
+								<span class="badge bg-info">Post/Comment</span>
+								{% elif tx.type == 'vote' %}
+								<span class="badge bg-warning">Vote</span>
+								{% else %}
+								<span class="badge bg-dark">{{ tx.type }}</span>
+								{% endif %}
+							</td>
+							<td>
+								{% if tx.type == 'transfer' %}
+								<div>
+									From <strong>{{ tx.from }}</strong> to
+									<strong>{{ tx.to }}</strong>
+								</div>
+								{% elif tx.type == 'claim_reward_balance' %}
+								<div>{{ tx.account }} claimed rewards</div>
+								{% elif tx.type == 'comment' %} {% if not
+								tx.parent_author %}
+								<div>
+									New post by <strong>{{ tx.author }}</strong>
+								</div>
+								{% else %}
+								<div>
+									Comment by <strong>{{ tx.author }}</strong>
+								</div>
+								{% endif %} {% elif tx.type == 'vote' %}
+								<div>
+									<strong>{{ tx.voter }}</strong> voted on @{{
+									tx.author }}'s post
+								</div>
+								{% else %}
+								<div>{{ tx.type }}</div>
+								{% endif %}
+							</td>
+							<td>
+								{% if tx.type == 'transfer' %} {{ tx.amount }}
+								{% elif tx.type == 'claim_reward_balance' %} {{
+								tx.reward_hive }}, {{ tx.reward_hbd }}, {{
+								tx.reward_vests }} {% else %} - {% endif %}
+							</td>
+							<td>{{ tx.timestamp }}</td>
+							<td>
+								{% if tx.block_num %}
+								<a
+									href="https://hiveblocks.com/b/{{ tx.block_num }}"
+									target="_blank"
+								>
+									{{ tx.block_num }}
+								</a>
+								{% else %} - {% endif %}
+							</td>
+						</tr>
+						{% endfor %} {% else %}
+						<tr>
+							<td colspan="5" class="text-center py-4">
+								No recent network transactions found
+							</td>
+						</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %} {% block styles %}
+<style>
+	.transactions-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1rem;
+	}
+
+	.transactions-table td {
+		vertical-align: middle;
+	}
+
+	.transaction-memo {
+		font-size: 0.85rem;
+		color: #6c757d;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 250px;
+	}
+
+	.loading-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(255, 255, 255, 0.7);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1000;
+	}
+
+	body.dark-mode .loading-overlay {
+		background-color: rgba(0, 0, 0, 0.7);
+	}
+
+	.card {
+		position: relative;
+		margin-bottom: 2rem;
+	}
+</style>
+{% endblock %} {% block scripts %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const refreshBtn = document.getElementById("refreshTransactionsBtn");
+
+		if (refreshBtn) {
+			refreshBtn.addEventListener("click", function () {
+				// Show a loading spinner
+				const container = document.querySelector(
+					".transactions-container"
+				);
+				const loadingOverlay = document.createElement("div");
+				loadingOverlay.className = "loading-overlay";
+				loadingOverlay.innerHTML =
+					'<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+				container.appendChild(loadingOverlay);
+
+				// Reload the page
+				window.location.reload();
+			});
+		}
+
+		// Add transaction details expand/collapse functionality
+		document.querySelectorAll(".transaction-memo").forEach((memo) => {
+			memo.addEventListener("click", function () {
+				this.classList.toggle("text-truncate");
+			});
+			memo.classList.add("text-truncate");
+		});
+	});
+</script>
+{% endblock %}

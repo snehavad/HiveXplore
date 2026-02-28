@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Card Components - Light/Dark Theme Compatible
+   ========================================================================== */
+
+.card {
+	background-color: var(--bg-card);
+	border-radius: 8px;
+	box-shadow: var(--shadow-sm);
+	transition: transform 0.2s, box-shadow 0.2s;
+	border: 1px solid var(--border-color);
+}
+
+.card:hover {
+	box-shadow: var(--shadow-md);
+}
+
+.card-header {
+	background-color: rgba(var(--accent-primary-rgb), 0.1);
+	padding: 1rem 1.25rem;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.card-body {
+	padding: 1.25rem;
+}
+
+.card-footer {
+	padding: 1rem 1.25rem;
+	border-top: 1px solid var(--border-color);
+}
+
+/* Feed Item Cards */
+.feed-item {
+	background-color: var(--bg-card);
+	border-radius: 8px;
+	box-shadow: var(--shadow-sm);
+	padding: 20px;
+	transition: transform 0.2s;
+	position: relative;
+	border: 1px solid var(--border-color);
+	margin-bottom: 20px;
+}
+
+.feed-item:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-md);
+}
+
+/* Profile Card */
+.profile-container {
+	background-color: var(--bg-card);
+	border-radius: 8px;
+	box-shadow: var(--shadow-md);
+	padding: 30px;
+	border: 1px solid var(--border-color);
+}
+
+/* Login Section Cards */
+.login-section {
+	background-color: var(--bg-card);
+	border-radius: 12px;
+	box-shadow: var(--shadow-md);
+	margin-bottom: 2rem;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	overflow: hidden;
+	border: 1px solid var(--border-color);
+}
+
+.login-section:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--shadow-lg);
+}
+
+.login-section-header {
+	padding: 1.5rem;
+	border-bottom: 1px solid var(--border-color);
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	background-color: rgba(var(--accent-primary-rgb), 0.05);
+}
+
+.login-section-body {
+	padding: 1.5rem;
+}

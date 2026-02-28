@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3f4f6" />
+      <stop offset="100%" stop-color="#e5e7eb" />
+    </linearGradient>
+    <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background shape -->
+  <rect x="50" y="50" width="300" height="200" rx="20" fill="url(#bg-gradient)" />
+
+  <!-- 404 Text -->
+  <g fill="url(#accent-gradient)">
+    <path d="M100,100 L100,180 L120,180 L120,160 L140,160 L140,180 L160,180 L160,100 L140,100 L140,140 L120,140 L120,100 Z" />
+    <circle cx="200" cy="140" r="40" />
+    <circle cx="200" cy="140" r="20" fill="#ffffff" />
+    <path d="M260,100 L260,180 L280,180 L280,160 L300,160 L300,180 L320,180 L320,100 L300,100 L300,140 L280,140 L280,100 Z" />
+  </g>
+
+  <!-- Lost icon -->
+  <g transform="translate(170, 210)">
+    <circle cx="30" cy="30" r="20" fill="#ffffff" stroke="url(#accent-gradient)" stroke-width="4" />
+    <g fill="url(#accent-gradient)">
+      <circle cx="22" cy="25" r="3" />
+      <circle cx="38" cy="25" r="3" />
+      <path d="M20,35 Q30,25 40,35" stroke="url(#accent-gradient)" stroke-width="3" fill="none" />
+    </g>
+  </g>
+
+  <!-- Decorative elements -->
+  <g fill-opacity="0.4">
+    <circle cx="80" cy="80" r="5" fill="url(#accent-gradient)" />
+    <circle cx="320" cy="90" r="8" fill="url(#accent-gradient)" />
+    <circle cx="90" cy="200" r="7" fill="url(#accent-gradient)" />
+    <circle cx="300" cy="210" r="4" fill="url(#accent-gradient)" />
+  </g>
+</svg>
