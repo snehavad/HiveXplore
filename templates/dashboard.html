@@ -151,7 +151,7 @@
 											<div class="trending-post-image me-3">
 												<a href="{{ url_for('view_post', author=post.author, permlink=post.permlink) }}">
 													{% if post.image %}
-														<img src="{{ post.image }}" alt="Post image" onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/placeholder.jpg') }}';">
+														<img src="{{ post.image }}" alt="Post image" onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/placeholder.jpg') }}';" />
 													{% else %}
 														<div class="post-image-placeholder">
 															<i class="bi bi-card-text"></i>
